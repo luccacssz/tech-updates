@@ -24,8 +24,15 @@ const fetchGitHubReleases = async (repo: any) => {
   try {
     const response = await fetch(
       `https://api.github.com/repos/${repo}/releases?per_page=5`,
+      {
+        headers: {
+          Authorization: `${process.env.GITHUB_TOKEN}`,
+          Accept: 'application/vnd.github.v3+json',
+        },
+      },
     )
     const releases = await response.json()
+
     return releases.map((release: any) => ({
       tag: release.tag_name,
       name: release.name,

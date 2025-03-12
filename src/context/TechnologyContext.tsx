@@ -1,12 +1,13 @@
 'use client'
 
-import { createContext, useContext, useState } from 'react'
+import { useQueryClient } from '@tanstack/react-query'
+import { createContext, useContext } from 'react'
 
-interface Technology {
-  name: string
-  version: string
-  downloads: number
-  latestReleases: { tag: string; name: string; url: string }[]
+export interface Technology {
+  name?: string
+  version?: string
+  downloads?: number
+  latestReleases?: { tag: string; name: string; url: string }[]
 }
 
 interface TechnologyContextType {
@@ -18,24 +19,29 @@ const TechnologyContext = createContext<TechnologyContextType | undefined>(
   undefined,
 )
 
+export const fetchTechData = async (tech: string): Promise<Technology> => {
+  const res = await fetch(`/api/tech/${tech}`)
+  if (!res.ok) {
+    throw new Error(`Erro ao buscar ${tech}`)
+  }
+  return res.json()
+}
+
 const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
-  const [technologies, setTechnologies] = useState<Record<string, Technology>>(
-    {},
-  )
+  const queryClient = useQueryClient()
 
-  const fetchTechnology = async (tech: string) => {
-    if (technologies[tech]) return
-
-    try {
-      const res = await fetch(`/api/tech/${tech}`)
-      const data = await res.json()
-      setTechnologies((prev) => ({ ...prev, [tech]: data }))
-    } catch (error) {
-      console.error(`Erro ao buscar ${tech}`, error)
-    }
+  const fetchTechnology = (tech: string) => {
+    queryClient.prefetchQuery({
+      queryKey: ['tech', tech],
+      queryFn: () => fetchTechData(tech),
+      staleTime: 1000 * 60 * 5,
+    })
   }
+
+  const technologies =
+    queryClient.getQueryData<Record<string, Technology>>(['tech']) || {}
 
   return (
     <TechnologyContext.Provider value={{ technologies, fetchTechnology }}>
@@ -46,10 +52,11 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
 
 const useTechnology = () => {
   const context = useContext(TechnologyContext)
-  if (!context)
+  if (!context) {
     throw new Error(
       'useTechnology deve ser usado dentro de um TechnologyProvider',
     )
+  }
   return context
 }
 

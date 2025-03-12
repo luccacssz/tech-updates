@@ -2,8 +2,9 @@ import { Outfit } from 'next/font/google'
 import './globals.css'
 
 import { SidebarProvider } from '@/context/SidebarContext'
-import { ThemeProvider } from '@/context/ThemeContext'
 import { TechnologyProvider } from '@/context/TechnologyContext'
+import { ThemeProvider } from '@/context/ThemeContext'
+import Providers from './providers'
 
 const outfit = Outfit({
   variable: '--font-outfit-sans',
@@ -18,11 +19,13 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${outfit.variable} dark:bg-gray-900`}>
-        <ThemeProvider>
-          <SidebarProvider>
-            <TechnologyProvider>{children}</TechnologyProvider>
-          </SidebarProvider>
-        </ThemeProvider>
+        <Providers>
+          <ThemeProvider>
+            <SidebarProvider>
+              <TechnologyProvider>{children}</TechnologyProvider>
+            </SidebarProvider>
+          </ThemeProvider>
+        </Providers>
       </body>
     </html>
   )

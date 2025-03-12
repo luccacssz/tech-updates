@@ -1,111 +1,9 @@
-import React from 'react'
+import { Technology } from '@/context/TechnologyContext'
+import Link from 'next/link'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 
-import Badge from '../ui/badge/Badge'
-import Image from 'next/image'
-
-interface Order {
-  id: number
-  user: {
-    image: string
-    name: string
-    role: string
-  }
-  projectName: string
-  team: {
-    images: string[]
-  }
-  status: string
-  budget: string
-}
-
-// Define the table data using the interface
-const tableData: Order[] = [
-  {
-    id: 1,
-    user: {
-      image: '/images/user/user-17.jpg',
-      name: 'Lindsey Curtis',
-      role: 'Web Designer',
-    },
-    projectName: 'Agency Website',
-    team: {
-      images: [
-        '/images/user/user-22.jpg',
-        '/images/user/user-23.jpg',
-        '/images/user/user-24.jpg',
-      ],
-    },
-    budget: '3.9K',
-    status: 'Active',
-  },
-  {
-    id: 2,
-    user: {
-      image: '/images/user/user-18.jpg',
-      name: 'Kaiya George',
-      role: 'Project Manager',
-    },
-    projectName: 'Technology',
-    team: {
-      images: ['/images/user/user-25.jpg', '/images/user/user-26.jpg'],
-    },
-    budget: '24.9K',
-    status: 'Pending',
-  },
-  {
-    id: 3,
-    user: {
-      image: '/images/user/user-17.jpg',
-      name: 'Zain Geidt',
-      role: 'Content Writing',
-    },
-    projectName: 'Blog Writing',
-    team: {
-      images: ['/images/user/user-27.jpg'],
-    },
-    budget: '12.7K',
-    status: 'Active',
-  },
-  {
-    id: 4,
-    user: {
-      image: '/images/user/user-20.jpg',
-      name: 'Abram Schleifer',
-      role: 'Digital Marketer',
-    },
-    projectName: 'Social Media',
-    team: {
-      images: [
-        '/images/user/user-28.jpg',
-        '/images/user/user-29.jpg',
-        '/images/user/user-30.jpg',
-      ],
-    },
-    budget: '2.8K',
-    status: 'Cancel',
-  },
-  {
-    id: 5,
-    user: {
-      image: '/images/user/user-21.jpg',
-      name: 'Carla George',
-      role: 'Front-end Developer',
-    },
-    projectName: 'Website',
-    team: {
-      images: [
-        '/images/user/user-31.jpg',
-        '/images/user/user-32.jpg',
-        '/images/user/user-33.jpg',
-      ],
-    },
-    budget: '4.5K',
-    status: 'Active',
-  },
-]
-
-export default function BasicTableOne() {
+export default function BasicTableOne(stackData: Technology) {
+  console.log(stackData, 'stackData')
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -118,63 +16,67 @@ export default function BasicTableOne() {
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  User
+                  Tag
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Project Name
+                  Name
                 </TableCell>
                 <TableCell
                   isHeader
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
-                  Team
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Status
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  Budget
+                  Url
                 </TableCell>
               </TableRow>
             </TableHeader>
 
             {/* Table Body */}
             <TableBody className="divide-y divide-gray-100 dark:divide-white/[0.05]">
-              {tableData.map((order) => (
-                <TableRow key={order.id}>
+              {stackData?.latestReleases?.map((stack) => (
+                <TableRow key={stack.tag} className="">
                   <TableCell className="px-5 py-4 sm:px-6 text-start">
-                    <div className="flex items-center gap-3">
-                      <div className="w-10 h-10 overflow-hidden rounded-full">
-                        <Image
-                          width={40}
-                          height={40}
-                          src={order.user.image}
-                          alt={order.user.name}
-                        />
+                    <div className="flex items-center gap-1">
+                      <div className="w-8 h-8 overflow-hidden rounded-full flex items-center">
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          width="24"
+                          height="24"
+                          viewBox="0 0 24 24"
+                          fill="none"
+                          stroke="currentColor"
+                          stroke-width="2"
+                          stroke-linecap="round"
+                          stroke-linejoin="round"
+                          className="lucide lucide-github"
+                        >
+                          <path d="M15 22v-4a4.8 4.8 0 0 0-1-3.5c3 0 6-2 6-5.5.08-1.25-.27-2.48-1-3.5.28-1.15.28-2.35 0-3.5 0 0-1 0-3 1.5-2.64-.5-5.36-.5-8 0C6 2 5 2 5 2c-.3 1.15-.3 2.35 0 3.5A5.403 5.403 0 0 0 4 9c0 3.5 3 5.5 6 5.5-.39.49-.68 1.05-.85 1.65-.17.6-.22 1.23-.15 1.85v4" />
+                          <path d="M9 18c-4.51 2-5-2-7-2" />
+                        </svg>
                       </div>
                       <div>
                         <span className="block font-medium text-gray-800 text-theme-sm dark:text-white/90">
-                          {order.user.name}
-                        </span>
-                        <span className="block text-gray-500 text-theme-xs dark:text-gray-400">
-                          {order.user.role}
+                          {stack.tag}
                         </span>
                       </div>
                     </div>
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    {order.projectName}
+                    {stack.name}
                   </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    <Link
+                      href={stack.url}
+                      target="_blank"
+                      className="text-blue-900 dark:text-blue-500 hover:underline"
+                    >
+                      {stack.url}
+                    </Link>
+                  </TableCell>
+
+                  {/*<TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <div className="flex -space-x-2">
                       {order.team.images.map((teamImage, index) => (
                         <div
@@ -191,8 +93,8 @@ export default function BasicTableOne() {
                         </div>
                       ))}
                     </div>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
+                  </TableCell> */}
+                  {/* <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
                     <Badge
                       size="sm"
                       color={
@@ -208,7 +110,7 @@ export default function BasicTableOne() {
                   </TableCell>
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
                     {order.budget}
-                  </TableCell>
+                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>
