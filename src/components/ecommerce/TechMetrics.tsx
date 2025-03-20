@@ -1,9 +1,10 @@
 'use client'
-import React from 'react'
-import Badge from '../ui/badge/Badge'
 import { ArrowDownIcon, ArrowUpIcon, BoxIconLine, GroupIcon } from '@/icons'
+import Badge from '../ui/badge/Badge'
+import { Technology } from '@/app/types/technology/Technology'
 
-export const EcommerceMetrics = () => {
+
+export const TechMetrics = ( {name, version, downloads}: Technology) => {
   return (
     <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 md:gap-6">
       {/* <!-- Metric Item Start --> */}
@@ -15,15 +16,15 @@ export const EcommerceMetrics = () => {
         <div className="flex items-end justify-between mt-5">
           <div>
             <span className="text-sm text-gray-500 dark:text-gray-400">
-              Customers
+              {name}
             </span>
             <h4 className="mt-2 font-bold text-gray-800 text-title-sm dark:text-white/90">
-              3,782
+              {version}
             </h4>
           </div>
           <Badge color="success">
             <ArrowUpIcon />
-            11.01%
+            {downloads}
           </Badge>
         </div>
       </div>

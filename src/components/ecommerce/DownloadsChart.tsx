@@ -1,17 +1,25 @@
 'use client'
+import { MoreDotIcon } from '@/icons'
 import { ApexOptions } from 'apexcharts'
 import dynamic from 'next/dynamic'
-import { MoreDotIcon } from '@/icons'
-import { DropdownItem } from '../ui/dropdown/DropdownItem'
 import { useState } from 'react'
 import { Dropdown } from '../ui/dropdown/Dropdown'
+import { DropdownItem } from '../ui/dropdown/DropdownItem'
 
 // Dynamically import the ReactApexChart component
 const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 })
 
-export default function MonthlySalesChart() {
+interface Chart {
+  techData: any
+  isLoading?: boolean
+}
+
+export default function DownloadsChart({ techData, isLoading }: Chart) {
+  const titles = techData.map((item: any) => item.title)
+  const downloads = techData.map((item: any) => item.downloads)
+
   const options: ApexOptions = {
     colors: ['#465fff'],
     chart: {
@@ -39,20 +47,7 @@ export default function MonthlySalesChart() {
       colors: ['transparent'],
     },
     xaxis: {
-      categories: [
-        'Jan',
-        'Feb',
-        'Mar',
-        'Apr',
-        'May',
-        'Jun',
-        'Jul',
-        'Aug',
-        'Sep',
-        'Oct',
-        'Nov',
-        'Dec',
-      ],
+      categories: titles,
       axisBorder: {
         show: false,
       },
@@ -61,12 +56,13 @@ export default function MonthlySalesChart() {
       },
     },
     legend: {
-      show: true,
+      show: false,
       position: 'top',
       horizontalAlign: 'left',
       fontFamily: 'Outfit',
     },
     yaxis: {
+      show: false,
       title: {
         text: undefined,
       },
@@ -93,8 +89,8 @@ export default function MonthlySalesChart() {
   }
   const series = [
     {
-      name: 'Sales',
-      data: [168, 385, 201, 298, 187, 195, 291, 110, 215, 390, 280, 112],
+      name: '',
+      data: downloads,
     },
   ]
   const [isOpen, setIsOpen] = useState(false)
@@ -141,12 +137,19 @@ export default function MonthlySalesChart() {
 
       <div className="max-w-full overflow-x-auto custom-scrollbar">
         <div className="-ml-5 min-w-[650px] xl:min-w-full pl-2">
-          <ReactApexChart
-            options={options}
-            series={series}
-            type="bar"
-            height={180}
-          />
+          {isLoading ? (
+            <div className="flex justify-center items-center mb-4">
+              <div className="w-16 h-16 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+            </div>
+          ) : (
+            <ReactApexChart
+              options={options}
+              //@ts-ignore
+              series={series}
+              type="bar"
+              height={180}
+            />
+          )}
         </div>
       </div>
     </div>

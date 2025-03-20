@@ -1,6 +1,7 @@
 import { Outfit } from 'next/font/google'
 import './globals.css'
 
+import { AuthProvider } from '@/context/AuthContext'
 import { SidebarProvider } from '@/context/SidebarContext'
 import { TechnologyProvider } from '@/context/TechnologyContext'
 import { ThemeProvider } from '@/context/ThemeContext'
@@ -21,9 +22,11 @@ export default function RootLayout({
       <body className={`${outfit.variable} dark:bg-gray-900`}>
         <Providers>
           <ThemeProvider>
-            <SidebarProvider>
-              <TechnologyProvider>{children}</TechnologyProvider>
-            </SidebarProvider>
+            <AuthProvider>
+              <SidebarProvider>
+                <TechnologyProvider>{children}</TechnologyProvider>
+              </SidebarProvider>
+            </AuthProvider>
           </ThemeProvider>
         </Providers>
       </body>

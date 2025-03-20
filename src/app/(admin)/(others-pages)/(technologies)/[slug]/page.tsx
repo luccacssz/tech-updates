@@ -3,18 +3,18 @@
 import ComponentCard from '@/components/common/ComponentCard'
 import PageBreadcrumb from '@/components/common/PageBreadCrumb'
 import BasicTableOne from '@/components/tables/BasicTableOne'
-
 import { fetchTechData } from '@/context/TechnologyContext'
 import { useQuery } from '@tanstack/react-query'
 import { Metadata } from 'next'
+import { useParams } from 'next/navigation'
 
 const metadata: Metadata = {
   title: 'Tech Updates',
   description: 'Tech updates',
 }
 
-export default function Technology({ params }: { params: { slug: string } }) {
-  const { slug } = params
+export default function Technology() {
+  const { slug } = useParams() as { slug: string }
 
   const {
     data: tech,
@@ -24,6 +24,7 @@ export default function Technology({ params }: { params: { slug: string } }) {
     queryKey: ['tech', slug],
     queryFn: () => fetchTechData(slug),
     staleTime: 1000 * 60 * 5,
+    enabled: !!slug,
   })
 
   if (isLoading)
