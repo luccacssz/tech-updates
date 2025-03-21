@@ -1,16 +1,17 @@
 'use client'
 
-import DownloadsChart from '@/components/ecommerce/DownloadsChart'
-import RecentOrders from '@/components/ecommerce/RecentOrders'
-import { TechMetrics } from '@/components/ecommerce/TechMetrics'
+import DownloadsChart from '@/components/dashboard/DownloadsChart'
+import RecentOrders from '@/components/dashboard/RecentOrders'
+import { TechMetrics } from '@/components/dashboard/TechMetrics'
 import { useTechnology } from '@/context/TechnologyContext'
 
-export default function Ecommerce() {
+export default function Dashboard() {
   const { fetchTechnology, fetchLatestUpdate } = useTechnology()
 
   const dataTech = fetchTechnology()
 
   const latestUpdate = fetchLatestUpdate()
+
   //@ts-ignore
   console.log(latestUpdate[0].data, 'latestUpdate')
 
@@ -42,6 +43,7 @@ export default function Ecommerce() {
           name={mostDownloaded?.name}
           version={mostDownloaded?.version}
           downloads={mostDownloaded?.downloads}
+          isLoading={isLoading}
         />
         <DownloadsChart techData={techDataDownloads} isLoading={isLoading} />
       </div>
