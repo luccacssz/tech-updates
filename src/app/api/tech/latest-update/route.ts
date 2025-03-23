@@ -22,16 +22,15 @@ export async function GET() {
       const res = await fetch(`https://registry.npmjs.org/${pkg}`)
       const data = await res.json()
 
-      if (data.time) {
-        const latestVersion = Object.keys(data.time).pop() // Última versão
-        //@ts-ignore
-        const latestUpdate = new Date(data.time[latestVersion])
+      if (data.time && data['dist-tags']?.latest) {
+        const latestStableVersion = data['dist-tags'].latest
+        const latestUpdate = new Date(data.time[latestStableVersion])
 
         if (latestUpdate > latestDate) {
           latestDate = latestUpdate
           latestPackage = {
             name: pkg,
-            version: latestVersion,
+            version: latestStableVersion,
             date: latestUpdate.toISOString(),
           }
         }

@@ -1,15 +1,16 @@
 'use client'
 
 import { Technology } from '@/app/types/technology/Technology'
-import { useQueries, useQueryClient } from '@tanstack/react-query'
+import { PackageInfo } from '@/components/dashboard/types/TechMetrics'
+import { useQueries } from '@tanstack/react-query'
 import { createContext, useContext } from 'react'
 
 interface TechnologyContextType {
   fetchTechnology: () => { data: Technology; isLoading: boolean }[]
-  
-  fetchLatestUpdate: () => []
+
+  fetchLatestUpdate: () => { data: PackageInfo; isLoading: boolean }[]
   fetchTechData: (tech: string) => Promise<Technology>
-  fetchLatestUpdateData: () => void
+  fetchLatestUpdateData: () => Promise<PackageInfo>
 }
 
 const TechnologyContext = createContext<TechnologyContextType | undefined>(
@@ -33,8 +34,6 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
     'vuejs',
   ]
 
-  const queryClient = useQueryClient()
-
   const fetchTechData = async (tech: string): Promise<Technology> => {
     const res = await fetch(`/api/tech/${tech}`)
     if (!res.ok) {
@@ -43,7 +42,7 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
     return res.json()
   }
 
-  const fetchLatestUpdateData = async (): Promise<Technology> => {
+  const fetchLatestUpdateData = async (): Promise<PackageInfo> => {
     const res = await fetch('/api/tech/latest-update')
 
     if (!res.ok) {
@@ -71,14 +70,13 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
           staleTime: 1000 * 60 * 5,
         },
       ],
-    })
+    }) as { data: PackageInfo; isLoading: boolean }[]
   }
 
   return (
     <TechnologyContext.Provider
       value={{
         fetchTechnology,
-        //@ts-ignore
         fetchLatestUpdate,
         fetchLatestUpdateData,
         fetchTechData,

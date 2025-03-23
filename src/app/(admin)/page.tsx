@@ -1,19 +1,15 @@
 'use client'
 
 import DownloadsChart from '@/components/dashboard/DownloadsChart'
-import RecentOrders from '@/components/dashboard/RecentOrders'
 import { TechMetrics } from '@/components/dashboard/TechMetrics'
+import TopTechnologies from '@/components/dashboard/TopTechnologies'
 import { useTechnology } from '@/context/TechnologyContext'
 
 export default function Dashboard() {
   const { fetchTechnology, fetchLatestUpdate } = useTechnology()
 
   const dataTech = fetchTechnology()
-
   const latestUpdate = fetchLatestUpdate()
-
-  //@ts-ignore
-  console.log(latestUpdate[0].data, 'latestUpdate')
 
   const techDataDownloads = dataTech
     .map((q) => {
@@ -35,6 +31,7 @@ export default function Dashboard() {
     .sort((a, b) => (b.downloads || 0) - (a.downloads || 0))
     .slice(0, 5)
   const isLoading = dataTech.some((q) => q.isLoading)
+  const isLoadingLatest = latestUpdate.some((q) => q.isLoading)
 
   return (
     <div className="grid grid-cols-12 gap-4 md:gap-6">
@@ -44,11 +41,13 @@ export default function Dashboard() {
           version={mostDownloaded?.version}
           downloads={mostDownloaded?.downloads}
           isLoading={isLoading}
+          packageInfo={latestUpdate[0]?.data}
+          isLoadingLastUpdate={isLoadingLatest}
         />
         <DownloadsChart techData={techDataDownloads} isLoading={isLoading} />
       </div>
       <div className="col-span-12">
-        <RecentOrders techData={top5Techs} />
+        <TopTechnologies techData={top5Techs} />
       </div>
     </div>
   )
