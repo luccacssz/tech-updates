@@ -1,6 +1,6 @@
 import { NextRequest, NextResponse } from 'next/server'
 
-const endpointTechs: Record<string, [string, string, string]> = {
+const endpointTechs: Record<string, string[]> = {
   angular: ['@angular/core', 'angular/angular', 'Angular'],
   cypress: ['cypress', 'cypress-io/cypress', 'Cypress'],
   jest: ['jest', 'jestjs/jest', 'Jest'],
@@ -13,22 +13,12 @@ const endpointTechs: Record<string, [string, string, string]> = {
   typescript: ['typescript', 'microsoft/TypeScript', 'TypeScript'],
   vuejs: ['vue', 'vuejs/core', 'Vue Js'],
 }
-
-type NpmData = {
-  version: string
-  downloads: number
-}
-
-const fetchNpmData = async (packageName: string): Promise<NpmData | null> => {
+const fetchNpmData = async (packageName: any) => {
   try {
     const [versionRes, downloadsRes] = await Promise.all([
       fetch(`https://registry.npmjs.org/${packageName}/latest`),
       fetch(`https://api.npmjs.org/downloads/point/last-month/${packageName}`),
     ])
-
-    if (!versionRes.ok || !downloadsRes.ok) {
-      throw new Error('Erro ao buscar dados do NPM')
-    }
 
     const versionData = await versionRes.json()
     const downloadsData = await downloadsRes.json()
@@ -43,36 +33,26 @@ const fetchNpmData = async (packageName: string): Promise<NpmData | null> => {
   }
 }
 
-type Release = {
-  tag: string
-  name: string
-  url: string
-}
-
-const fetchGitHubReleases = async (repo: string): Promise<Release[]> => {
+const fetchGitHubReleases = async (repo: any) => {
   try {
     const response = await fetch(
       `https://api.github.com/repos/${repo}/releases?per_page=5`,
       {
         headers: {
-          Authorization: `Bearer ${process.env.GITHUB_TOKEN}`,
+          Authorization: `${process.env.GITHUB_TOKEN}`,
           Accept: 'application/vnd.github.v3+json',
         },
       },
     )
-
-    if (!response.ok) {
-      throw new Error(`Erro ao buscar releases do GitHub para ${repo}`)
-    }
-
     const releases = await response.json()
+
     return releases.map((release: any) => ({
       tag: release.tag_name,
       name: release.name,
       url: release.html_url,
     }))
   } catch (error) {
-    console.error(error)
+    console.error(`Erro ao buscar releases do GitHub para ${repo}:`, error)
     return []
   }
 }
@@ -83,19 +63,13 @@ export async function GET(
 ) {
   const { slug } = params
 
-  if (!endpointTechs[slug]) {
-    return NextResponse.json(
-      { error: 'Tecnologia não encontrada' },
-      { status: 404 },
-    )
-  }
-
   const [npmPackage, githubRepo, techName] = endpointTechs[slug]
-  const npmData = await fetchNpmData(npmPackage)
-  const releases = await fetchGitHubReleases(githubRepo)
 
+  console.log(npmPackage)
+  const npmData = await fetchNpmData(`${npmPackage}`)
+  const releases = await fetchGitHubReleases(`${githubRepo}`)
   return NextResponse.json({
-    name: techName,
+    name: `${techName}`,
     ...npmData,
     latestReleases: releases,
   })

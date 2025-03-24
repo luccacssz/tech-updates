@@ -3,7 +3,7 @@
 import ComponentCard from '@/components/common/ComponentCard'
 import PageBreadcrumb from '@/components/common/PageBreadCrumb'
 import BasicTableOne from '@/components/tables/BasicTableOne'
-import { fetchTechData } from '@/context/TechnologyContext'
+import { useTechnology } from '@/context/TechnologyContext'
 import { useQuery } from '@tanstack/react-query'
 import { Metadata } from 'next'
 import { useParams } from 'next/navigation'
@@ -15,6 +15,7 @@ const metadata: Metadata = {
 
 export default function Technology() {
   const { slug } = useParams() as { slug: string }
+  const { fetchTechData } = useTechnology()
 
   const {
     data: tech,

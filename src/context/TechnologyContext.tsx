@@ -7,7 +7,6 @@ import { createContext, useContext } from 'react'
 
 interface TechnologyContextType {
   fetchTechnology: () => { data: Technology; isLoading: boolean }[]
-
   fetchLatestUpdate: () => { data: PackageInfo; isLoading: boolean }[]
   fetchTechData: (tech: string) => Promise<Technology>
   fetchLatestUpdateData: () => Promise<PackageInfo>
