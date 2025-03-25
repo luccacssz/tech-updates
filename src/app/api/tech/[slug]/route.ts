@@ -1,3 +1,5 @@
+import { NpmData } from '@/app/types/NpmData'
+import { Release } from '@/app/types/Release'
 import { NextRequest, NextResponse } from 'next/server'
 
 const endpointTechs: Record<string, string[]> = {
@@ -13,7 +15,8 @@ const endpointTechs: Record<string, string[]> = {
   typescript: ['typescript', 'microsoft/TypeScript', 'TypeScript'],
   vuejs: ['vue', 'vuejs/core', 'Vue Js'],
 }
-const fetchNpmData = async (packageName: any) => {
+
+const fetchNpmData = async (packageName: string): Promise<NpmData | null> => {
   try {
     const [versionRes, downloadsRes] = await Promise.all([
       fetch(`https://registry.npmjs.org/${packageName}/latest`),
@@ -33,7 +36,7 @@ const fetchNpmData = async (packageName: any) => {
   }
 }
 
-const fetchGitHubReleases = async (repo: any) => {
+const fetchGitHubReleases = async (repo: string): Promise<Release[]> => {
   try {
     const response = await fetch(
       `https://api.github.com/repos/${repo}/releases?per_page=5`,
@@ -46,11 +49,13 @@ const fetchGitHubReleases = async (repo: any) => {
     )
     const releases = await response.json()
 
-    return releases.map((release: any) => ({
-      tag: release.tag_name,
-      name: release.name,
-      url: release.html_url,
-    }))
+    return releases.map(
+      (release: { tag_name: string; name: string; html_url: string }) => ({
+        tag: release.tag_name,
+        name: release.name,
+        url: release.html_url,
+      }),
+    )
   } catch (error) {
     console.error(`Erro ao buscar releases do GitHub para ${repo}:`, error)
     return []
@@ -63,13 +68,21 @@ export async function GET(
 ) {
   const { slug } = params
 
-  const [npmPackage, githubRepo, techName] = endpointTechs[slug]
+  const techData = endpointTechs[slug]
+  if (!techData) {
+    return NextResponse.json(
+      { error: 'Tecnologia não encontrada' },
+      { status: 404 },
+    )
+  }
 
-  console.log(npmPackage)
-  const npmData = await fetchNpmData(`${npmPackage}`)
-  const releases = await fetchGitHubReleases(`${githubRepo}`)
+  const [npmPackage, githubRepo, techName] = techData
+
+  const npmData = await fetchNpmData(npmPackage)
+  const releases = await fetchGitHubReleases(githubRepo)
+
   return NextResponse.json({
-    name: `${techName}`,
+    name: techName,
     ...npmData,
     latestReleases: releases,
   })

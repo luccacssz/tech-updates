@@ -47,7 +47,7 @@ export default function Dashboard() {
         <DownloadsChart techData={techDataDownloads} isLoading={isLoading} />
       </div>
       <div className="col-span-12">
-        <TopTechnologies techData={top5Techs} />
+        <TopTechnologies techData={top5Techs} isLoadingTop5Techs={isLoading} />
       </div>
     </div>
   )

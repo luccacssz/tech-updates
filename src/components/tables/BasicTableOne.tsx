@@ -1,4 +1,4 @@
-import { Technology } from '@/context/TechnologyContext'
+import { Technology } from '@/app/types/Technology'
 import Link from 'next/link'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 

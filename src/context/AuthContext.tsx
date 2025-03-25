@@ -1,9 +1,14 @@
 'use client'
 
 import { auth, provider } from '@/lib/fireBaseConfig'
-import { User, signInWithPopup, signOut } from 'firebase/auth'
+import {
+  User,
+  onAuthStateChanged,
+  signInWithPopup,
+  signOut,
+} from 'firebase/auth'
 import { useRouter } from 'next/navigation'
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface AuthContextType {
   user: User | null
@@ -17,6 +22,13 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
   const router = useRouter()
 
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser)
+    })
+    return () => unsubscribe()
+  }, [])
+
   const loginWithGoogle = async () => {
     try {
       provider.setCustomParameters({ prompt: 'select_account' })
@@ -24,7 +36,6 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const result = await signInWithPopup(auth, provider)
       setUser(result.user)
 
-      console.log(result.user, 'user')
       if (result.user) {
         router.push('/')
       }

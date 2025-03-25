@@ -1,6 +1,6 @@
 'use client'
 
-import { Technology } from '@/app/types/technology/Technology'
+import { Technology } from '@/app/types/Technology'
 import { PackageInfo } from '@/components/dashboard/types/TechMetrics'
 import { useQueries } from '@tanstack/react-query'
 import { createContext, useContext } from 'react'

@@ -36,7 +36,7 @@ export default function Technology() {
     )
 
   if (error)
-    return <div className="text-red-500">Erro ao carregar os dados.</div>
+    return <div className="text-red-500">Erro ao carregar os dados</div>
 
   return (
     <div>
