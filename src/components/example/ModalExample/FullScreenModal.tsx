@@ -18,7 +18,7 @@ export default function FullScreenModal({ text }: { text: string }) {
 
   const renderMarkdownToHtml = marked(text)
   return (
-    <div title="Changelog details">
+    <div title="Changelog details" className="cursor-default ">
       <Button
         size="sm"
         onClick={openFullscreenModal}
@@ -32,7 +32,7 @@ export default function FullScreenModal({ text }: { text: string }) {
         isFullscreen={true}
         showCloseButton={true}
       >
-        <div className="fixed top-0 left-0 flex flex-col justify-between w-full h-screen p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10">
+        <div className=" fixed top-0 left-0 flex flex-col justify-between w-full h-screen p-6 overflow-x-hidden overflow-y-auto bg-white dark:bg-gray-900 lg:p-10">
           <div>
             <h4 className="font-semibold text-gray-800 mb-7 text-title-sm dark:text-white/90">
               ChangeLog
