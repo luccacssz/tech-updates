@@ -1,9 +1,13 @@
+'use client'
+
 import { Technology } from '@/app/types/Technology'
 import Link from 'next/link'
+import { useState } from 'react'
+import FullScreenModal from '../example/ModalExample/FullScreenModal'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 
 export default function BasicTableOne(stackData: Technology) {
-  console.log(stackData, 'stackData')
+  const [openModal, setOpenModal] = useState(false)
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -29,6 +33,12 @@ export default function BasicTableOne(stackData: Technology) {
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
                   Url
+                </TableCell>
+                <TableCell
+                  isHeader
+                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
+                >
+                  ChangeLog
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -73,6 +83,18 @@ export default function BasicTableOne(stackData: Technology) {
                     >
                       {stack.url}
                     </Link>
+                  </TableCell>
+
+                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
+                    <button onClick={() => setOpenModal(true)}>
+                      <FullScreenModal
+                        //@ts-ignore
+                        isOpen={openModal}
+                        onClose={() => setOpenModal(false)}
+                        showCloseButton={true}
+                        text={stack.changelog}
+                      />
+                    </button>
                   </TableCell>
 
                   {/*<TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">

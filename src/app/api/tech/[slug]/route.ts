@@ -50,9 +50,15 @@ const fetchGitHubReleases = async (repo: string): Promise<Release[]> => {
     const releases = await response.json()
 
     return releases.map(
-      (release: { tag_name: string; name: string; html_url: string }) => ({
+      (release: {
+        tag_name: string
+        name: string
+        body: string
+        html_url: string
+      }) => ({
         tag: release.tag_name,
         name: release.name,
+        changelog: release.body,
         url: release.html_url,
       }),
     )
@@ -66,7 +72,7 @@ export async function GET(
   req: NextRequest,
   { params }: { params: { slug: string } },
 ) {
-  const { slug } = params
+  const { slug } = await params
 
   const techData = endpointTechs[slug]
   if (!techData) {
