@@ -18,7 +18,7 @@ export default function FullScreenModal({ text }: { text: string }) {
 
   const renderMarkdownToHtml = marked(text)
   return (
-    <div title="Full Screen Modal">
+    <div title="Changelog details">
       <Button
         size="sm"
         onClick={openFullscreenModal}
@@ -38,17 +38,9 @@ export default function FullScreenModal({ text }: { text: string }) {
               ChangeLog
             </h4>
             <div
-              className="text-sm leading-6 text-gray-500 dark:text-gray-400 flex flex-col gap-4 items-start"
+              className="text-sm pointer-events-none leading-6 text-gray-500 dark:text-gray-400 flex flex-col items-start gap-4 [&>ul]:flex [&>ul]:flex-col [&>ul]:items-start"
               dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml }}
             />
-          </div>
-          <div className="flex items-center justify-end w-full gap-3 mt-8">
-            <Button size="sm" variant="outline" onClick={closeFullscreenModal}>
-              Close
-            </Button>
-            <Button size="sm" onClick={handleSave}>
-              Save Changes
-            </Button>
           </div>
         </div>
       </Modal>
