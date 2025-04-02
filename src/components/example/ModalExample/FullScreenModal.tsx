@@ -38,7 +38,7 @@ export default function FullScreenModal({ text }: { text: string }) {
               ChangeLog
             </h4>
             <div
-              className="text-sm pointer-events-none leading-6 text-gray-500 dark:text-gray-400 flex flex-col items-start gap-4 [&>ul]:flex [&>ul]:flex-col [&>ul]:items-start"
+              className="text-sm leading-6 text-gray-500 dark:text-gray-400 flex flex-col items-start gap-4 [&>ul]:flex [&>ul]:flex-col [&>ul]:items-start"
               dangerouslySetInnerHTML={{ __html: renderMarkdownToHtml }}
             />
           </div>
