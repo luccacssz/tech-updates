@@ -70,19 +70,20 @@ const fetchGitHubReleases = async (repo: string): Promise<Release[]> => {
 
 export async function GET(
   req: NextRequest,
-  context: { params: { slug: string } },
+  props: {
+    params: Promise<{ slug: string }>
+  },
 ) {
-  const { slug } = context.params
+  const params = await props.params
 
-  const techData = endpointTechs[slug]
-  if (!techData) {
+  if (!params.slug || !endpointTechs[params.slug]) {
     return NextResponse.json(
       { error: 'Tecnologia não encontrada' },
       { status: 404 },
     )
   }
 
-  const [npmPackage, githubRepo, techName] = techData
+  const [npmPackage, githubRepo, techName] = endpointTechs[params.slug]
 
   const npmData = await fetchNpmData(npmPackage)
   const releases = await fetchGitHubReleases(githubRepo)

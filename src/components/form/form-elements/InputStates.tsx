@@ -22,10 +22,7 @@ export default function InputStates() {
     validateEmail(value)
   }
   return (
-    <ComponentCard
-      title="Input States"
-      desc="Validation styles for error, success and disabled states on form controls."
-    >
+    <ComponentCard title="Input States">
       <div className="space-y-5 sm:space-y-6">
         {/* Error Input */}
         <div>
