@@ -70,9 +70,9 @@ const fetchGitHubReleases = async (repo: string): Promise<Release[]> => {
 
 export async function GET(
   req: NextRequest,
-  { params }: { params: { slug: string } },
+  context: { params: { slug: string } },
 ) {
-  const { slug } = await params
+  const { slug } = context.params
 
   const techData = endpointTechs[slug]
   if (!techData) {
