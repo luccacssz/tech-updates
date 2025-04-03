@@ -11,14 +11,19 @@ const ReactApexChart = dynamic(() => import('react-apexcharts'), {
   ssr: false,
 })
 
+interface ChartProps {
+  title: string | undefined
+  downloads: number | undefined
+}
+
 interface Chart {
-  techData: any
+  techData: ChartProps[]
   isLoading?: boolean
 }
 
 export default function DownloadsChart({ techData, isLoading }: Chart) {
-  const titles = techData.map((item: any) => item.title)
-  const downloads = techData.map((item: any) => item.downloads)
+  const titles = techData.map((item) => item.title)
+  const downloads = techData.map((item) => item.downloads)
 
   const options: ApexOptions = {
     colors: ['#465fff'],
@@ -144,8 +149,7 @@ export default function DownloadsChart({ techData, isLoading }: Chart) {
           ) : (
             <ReactApexChart
               options={options}
-              //@ts-ignore
-              series={series}
+              series={series as any}
               type="bar"
               height={180}
             />

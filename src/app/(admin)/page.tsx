@@ -3,13 +3,14 @@
 import DownloadsChart from '@/components/dashboard/DownloadsChart'
 import { TechMetrics } from '@/components/dashboard/TechMetrics'
 import TopTechnologies from '@/components/dashboard/TopTechnologies'
-import { useTechnology } from '@/context/TechnologyContext'
+import {
+  useFetchLatestUpdate,
+  useFetchTechnology,
+} from '@/context/TechnologyContext'
 
 export default function Dashboard() {
-  const { fetchTechnology, fetchLatestUpdate } = useTechnology()
-
-  const dataTech = fetchTechnology()
-  const latestUpdate = fetchLatestUpdate()
+  const dataTech = useFetchTechnology()
+  const latestUpdate = useFetchLatestUpdate()
 
   const techDataDownloads = dataTech
     .map((q) => {

@@ -2,12 +2,10 @@
 
 import { Technology } from '@/app/types/Technology'
 import Link from 'next/link'
-import { useState } from 'react'
 import FullScreenModal from '../example/ModalExample/FullScreenModal'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 
 export default function BasicTableOne(stackData: Technology) {
-  const [openModal, setOpenModal] = useState(false)
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -86,14 +84,8 @@ export default function BasicTableOne(stackData: Technology) {
                   </TableCell>
 
                   <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    <button onClick={() => setOpenModal(true)}>
-                      <FullScreenModal
-                        //@ts-ignore
-                        isOpen={openModal}
-                        onClose={() => setOpenModal(false)}
-                        showCloseButton={true}
-                        text={stack.changelog}
-                      />
+                    <button>
+                      <FullScreenModal text={stack.changelog} />
                     </button>
                   </TableCell>
 

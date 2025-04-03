@@ -6,11 +6,7 @@ import { Modal } from '../../ui/modal'
 
 export default function DefaultModal({ text }: { text: string }) {
   const { isOpen, openModal, closeModal } = useModal()
-  const handleSave = () => {
-    // Handle save logic here
-    console.log('Saving changes...')
-    closeModal()
-  }
+
   return (
     <div>
       <div title="Default Modal">

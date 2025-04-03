@@ -6,8 +6,7 @@ import { useQueries } from '@tanstack/react-query'
 import { createContext, useContext } from 'react'
 
 interface TechnologyContextType {
-  fetchTechnology: () => { data: Technology; isLoading: boolean }[]
-  fetchLatestUpdate: () => { data: PackageInfo; isLoading: boolean }[]
+  technologies: string[]
   fetchTechData: (tech: string) => Promise<Technology>
   fetchLatestUpdateData: () => Promise<PackageInfo>
 }
@@ -50,35 +49,12 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
     return res.json()
   }
 
-  const fetchTechnology = () => {
-    return useQueries({
-      queries: technologies.map((tech) => ({
-        queryKey: ['tech', tech],
-        queryFn: () => fetchTechData(tech),
-        staleTime: 1000 * 60 * 5,
-      })),
-    }) as { data: Technology; isLoading: boolean }[]
-  }
-
-  const fetchLatestUpdate = () => {
-    return useQueries({
-      queries: [
-        {
-          queryKey: ['latest-update'],
-          queryFn: () => fetchLatestUpdateData(),
-          staleTime: 1000 * 60 * 5,
-        },
-      ],
-    }) as { data: PackageInfo; isLoading: boolean }[]
-  }
-
   return (
     <TechnologyContext.Provider
       value={{
-        fetchTechnology,
-        fetchLatestUpdate,
-        fetchLatestUpdateData,
+        technologies,
         fetchTechData,
+        fetchLatestUpdateData,
       }}
     >
       {children}
@@ -86,6 +62,7 @@ const TechnologyProvider: React.FC<{ children: React.ReactNode }> = ({
   )
 }
 
+// ✅ Criando hooks personalizados para evitar o erro do ESLint
 const useTechnology = () => {
   const context = useContext(TechnologyContext)
   if (!context) {
@@ -96,4 +73,33 @@ const useTechnology = () => {
   return context
 }
 
-export { TechnologyProvider, useTechnology }
+const useFetchTechnology = () => {
+  const { technologies, fetchTechData } = useTechnology()
+  return useQueries({
+    queries: technologies.map((tech) => ({
+      queryKey: ['tech', tech],
+      queryFn: () => fetchTechData(tech),
+      staleTime: 1000 * 60 * 5,
+    })),
+  }) as { data: Technology; isLoading: boolean }[]
+}
+
+const useFetchLatestUpdate = () => {
+  const { fetchLatestUpdateData } = useTechnology()
+  return useQueries({
+    queries: [
+      {
+        queryKey: ['latest-update'],
+        queryFn: () => fetchLatestUpdateData(),
+        staleTime: 1000 * 60 * 5,
+      },
+    ],
+  }) as { data: PackageInfo; isLoading: boolean }[]
+}
+
+export {
+  TechnologyProvider,
+  useTechnology,
+  useFetchTechnology,
+  useFetchLatestUpdate,
+}

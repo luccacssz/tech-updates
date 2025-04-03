@@ -10,11 +10,6 @@ export default function FullScreenModal({ text }: { text: string }) {
     openModal: openFullscreenModal,
     closeModal: closeFullscreenModal,
   } = useModal()
-  const handleSave = () => {
-    // Handle save logic here
-    console.log('Saving changes...')
-    closeFullscreenModal()
-  }
 
   const renderMarkdownToHtml = marked(text)
   return (
