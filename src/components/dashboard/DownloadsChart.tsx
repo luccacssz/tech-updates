@@ -23,7 +23,7 @@ interface Chart {
 
 export default function DownloadsChart({ techData, isLoading }: Chart) {
   const titles = techData.map((item) => item.title)
-  const downloads = techData.map((item) => item.downloads)
+  const downloads = techData.map((item) => item.downloads ?? null)
 
   const options: ApexOptions = {
     colors: ['#465fff'],
@@ -95,7 +95,7 @@ export default function DownloadsChart({ techData, isLoading }: Chart) {
   const series = [
     {
       name: '',
-      data: downloads,
+      data: downloads.filter((val): val is number => val !== null),
     },
   ]
   const [isOpen, setIsOpen] = useState(false)
@@ -149,7 +149,7 @@ export default function DownloadsChart({ techData, isLoading }: Chart) {
           ) : (
             <ReactApexChart
               options={options}
-              series={series as any}
+              series={series}
               type="bar"
               height={180}
             />
