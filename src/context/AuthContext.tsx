@@ -2,6 +2,7 @@
 
 import { auth, provider } from '@/lib/fireBaseConfig'
 import {
+  Auth,
   User,
   onAuthStateChanged,
   signInWithPopup,
@@ -23,7 +24,9 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    if (!auth) return // Garante que auth está definido antes de usar
+
+    const unsubscribe = onAuthStateChanged(auth as Auth, (currentUser) => {
       setUser(currentUser)
     })
     return () => unsubscribe()
@@ -32,6 +35,8 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const loginWithGoogle = async () => {
     try {
       provider.setCustomParameters({ prompt: 'select_account' })
+
+      if (!auth) throw new Error('Firebase auth is not initialized')
 
       const result = await signInWithPopup(auth, provider)
       setUser(result.user)
@@ -45,6 +50,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }
 
   const logout = async () => {
+    if (!auth) return
     await signOut(auth)
     setUser(null)
     router.push('/signin')
