@@ -28,7 +28,6 @@ export default function Dashboard() {
     { downloads: 0 },
   )
 
-  console.log('FIREBASE_API_KEY:', process.env.NEXT_PUBLIC_FIREBASE_API_KEY)
   const top5Techs = techData
     .sort((a, b) => (b.downloads || 0) - (a.downloads || 0))
     .slice(0, 5)
