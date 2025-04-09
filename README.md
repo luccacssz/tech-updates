@@ -17,7 +17,6 @@ An interactive dashboard that displays the latest versions, changelogs, and stat
 - [Tailwind CSS](https://tailwindcss.com/) — Utility-first CSS framework
 - [TypeScript](https://www.typescriptlang.org/) — Typed JavaScript
 - [React Query](https://tanstack.com/query/latest) — Data fetching and caching
-- [Jest](https://jestjs.io/) — Unit testing framework
 
 ## 🛠️ Getting Started
 
@@ -29,8 +28,8 @@ git clone https://github.com/your-username/tech-dashboard.git
 cd tech-dashboard
 
 # Install dependencies
-npm install
+yarn
 
 # Run the development server
-npm run dev
+yarn dev
 ```
