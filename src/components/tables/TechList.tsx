@@ -2,10 +2,9 @@
 
 import { Technology } from '@/app/types/Technology'
 import Link from 'next/link'
-import FullScreenModal from '../example/ModalExample/FullScreenModal'
 import { Table, TableBody, TableCell, TableHeader, TableRow } from '../ui/table'
 
-export default function BasicTableOne(stackData: Technology) {
+export default function TechList(stackData: Technology) {
   return (
     <div className="overflow-hidden rounded-xl border border-gray-200 bg-white dark:border-white/[0.05] dark:bg-white/[0.03]">
       <div className="max-w-full overflow-x-auto">
@@ -31,12 +30,6 @@ export default function BasicTableOne(stackData: Technology) {
                   className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
                 >
                   Url
-                </TableCell>
-                <TableCell
-                  isHeader
-                  className="px-5 py-3 font-medium text-gray-500 text-start text-theme-xs dark:text-gray-400"
-                >
-                  ChangeLog
                 </TableCell>
               </TableRow>
             </TableHeader>
@@ -82,48 +75,6 @@ export default function BasicTableOne(stackData: Technology) {
                       {stack.url}
                     </Link>
                   </TableCell>
-
-                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    <button>
-                      <FullScreenModal text={stack.changelog} />
-                    </button>
-                  </TableCell>
-
-                  {/*<TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <div className="flex -space-x-2">
-                      {order.team.images.map((teamImage, index) => (
-                        <div
-                          key={index}
-                          className="w-6 h-6 overflow-hidden border-2 border-white rounded-full dark:border-gray-900"
-                        >
-                          <Image
-                            width={24}
-                            height={24}
-                            src={teamImage}
-                            alt={`Team member ${index + 1}`}
-                            className="w-full"
-                          />
-                        </div>
-                      ))}
-                    </div>
-                  </TableCell> */}
-                  {/* <TableCell className="px-4 py-3 text-gray-500 text-start text-theme-sm dark:text-gray-400">
-                    <Badge
-                      size="sm"
-                      color={
-                        order.status === 'Active'
-                          ? 'success'
-                          : order.status === 'Pending'
-                            ? 'warning'
-                            : 'error'
-                      }
-                    >
-                      {order.status}
-                    </Badge>
-                  </TableCell>
-                  <TableCell className="px-4 py-3 text-gray-500 text-theme-sm dark:text-gray-400">
-                    {order.budget}
-                  </TableCell> */}
                 </TableRow>
               ))}
             </TableBody>

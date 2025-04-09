@@ -2,7 +2,7 @@
 
 import ComponentCard from '@/components/common/ComponentCard'
 import PageBreadcrumb from '@/components/common/PageBreadCrumb'
-import BasicTableOne from '@/components/tables/BasicTableOne'
+import TechList from '@/components/tables/TechList'
 import { useTechnology } from '@/context/TechnologyContext'
 import { useQuery } from '@tanstack/react-query'
 import { useParams } from 'next/navigation'
@@ -37,7 +37,7 @@ export default function Technology() {
       <PageBreadcrumb pageTitle="Technology" />
       <div className="space-y-6">
         <ComponentCard title={tech?.name} currentVersion={tech?.version}>
-          <BasicTableOne latestReleases={tech?.latestReleases} />
+          <TechList latestReleases={tech?.latestReleases} />
         </ComponentCard>
       </div>
     </div>

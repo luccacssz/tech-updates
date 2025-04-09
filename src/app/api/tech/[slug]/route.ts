@@ -14,6 +14,9 @@ const endpointTechs: Record<string, string[]> = {
   tailwindcss: ['tailwindcss', 'tailwindlabs/tailwindcss', 'Tailwind CSS'],
   typescript: ['typescript', 'microsoft/TypeScript', 'TypeScript'],
   vuejs: ['vue', 'vuejs/core', 'Vue Js'],
+  materialui: ['@mui/material', 'mui/material', 'Material UI'],
+  openai: ['openai', 'openai/openai-node', 'OpenAI'],
+  shadcn: ['class-variance-authority', 'shadcn/ui', 'shadcn/ui'],
 }
 
 const fetchNpmData = async (packageName: string): Promise<NpmData | null> => {

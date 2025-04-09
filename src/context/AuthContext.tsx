@@ -24,7 +24,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const router = useRouter()
 
   useEffect(() => {
-    if (!auth) return // Garante que auth está definido antes de usar
+    if (!auth) return 
 
     const unsubscribe = onAuthStateChanged(auth as Auth, (currentUser) => {
       setUser(currentUser)
